@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Panama Taiwan</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script>
+      $(document).ready(get_data());
+
+
+      function get_data(){
+        var url = "https://raw.githubusercontent.com/kiang/Panama_Papers_Taiwan/gh-pages/taiwan.json"
+        $.getJSON(url, function(json) {
+            load_view(json);
+        });
+      }
+
+      function load_view(data){
+        // console.log(data.length);
+        // console.log(data[0]['officers']['shareholder of'].length)
+          var myLatLng = {lat: 24.03, lng: 121.30};
+          var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 8,
+          center: myLatLng
+        });
+
+        for(i = 0; i < data.length; i++){
+          for(j = 0; j < data[i]['officers']['shareholder of'].length; j++){
+            var address = data[i]['officers']['shareholder of'][j].registered_address
+            // console.log(address); 
+            address[0].address = address[0].address.replace(/\s+/g," ").replace(";",",");
+            address = replaceAll(address[0].address,';','');
+            url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+address+'&key=AIzaSyCzc18pDW3djt590PXJ3VZP4r6WYz8Vcqo';
+            // console.log(address);
+            $.getJSON(url, function(data) {
+                var myLatLng = {lat: data.results[0].geometry.location.lat, lng: data.results[0].geometry.location.lng};
+                console.log(data.results[0].geometry.location);
+                var marker = new google.maps.Marker({
+                  position: new google.maps.LatLng(myLatLng),
+                  map: map,
+                  title: 'Tawian!'
+                });
+            });
+          }
+        }
+      }
+
+      function replaceAll(str, find, replace) {
+        return str.replace(new RegExp(find, 'g'), replace);
+      }
+      function initMap() {
+        var myLatLng = {lat: 24.03, lng: 121.30};
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 8,
+          center: myLatLng
+        });
+
+        var marker = new google.maps.Marker({
+          position: myLatLng,
+          map: map,
+          title: 'Tawian!'
+        });
+      }
+
+      // function pinMarkers(){
+      //   var myLatLng = {lat: 23.03, lng: 121.30};
+      //   var map = new google.maps.Map(document.getElementById('map'), {
+      //     zoom: 8,
+      //     center: myLatLng
+      //   });
+      //   var marker = new google.maps.Marker({
+      //     position: myLatLng,
+      //     map: map,
+      //     title: 'Tawian!'
+      //   });
+      // }
+
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAo_rPSaMfesmNeux7tw0skpdKGLImSXUc&callback=initMap">
+    </script>
+  </body>
+</html>
