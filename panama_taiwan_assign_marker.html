@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta charset="utf-8">
+    <title>Panama Taiwan</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" charset="UTF-8"></script>
+    <script>
+      data = ['新北市新莊區中正路723號', '新北市新莊區八德街53號2樓', '新北市新莊區民安西路89號 9樓', '新北市新莊區立廷里立信三街25之7號 5樓', '新北市新莊區中港路153號', '台灣新北市新莊區新樹路615號', '新北市新莊區Jiang-Zhong街41巷15號12樓', '新北市新莊區中港路179號2樓', '新北市新莊區中華路52巷6號2樓', '新北市新莊區幸福路737號1樓之2', '新北市新莊區中和街204巷6號14樓', '新北市新莊區思源路177巷2號', '新北市新莊區 中港路605巷3號4樓', '新北市新莊區中正路 740-5號3樓', '新北市新莊區新北市昌隆街77號9樓之2', '新北市新莊區新北市福營路205號', '新北市新莊區民安路387巷34號', '新北市新莊區民安路387巷34號', '新北市新莊區復興路一段149巷21弄6號', '新北市新莊區中山路一段107號22樓之6', '新北市新莊區中平路302巷6號8樓',];
+      $(document).ready(load_view2());
+
+      function load_view2(){
+        for(i = 0; i < data.length; i++){
+          url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+data[i]+'&key=AIzaSyAtopxgmg1GL2hocGB_45mOxe8Fbdky8P8';
+          $.getJSON(url, function(data) {
+            console.log([data.results[0].geometry.location.lat,data.results[0].geometry.location.lng]);
+          })
+        }
+      }
+    </script>
+  </body>
+</html>

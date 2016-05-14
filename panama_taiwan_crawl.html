@@ -41,20 +41,23 @@
         for(i = 0; i < data.length; i++){
           for(j = 0; j < data[i]['officers']['shareholder of'].length; j++){
             var address = data[i]['officers']['shareholder of'][j].registered_address
-            console.log(data[i]['officers']['shareholder of'][j].name); 
+            // console.log(data[i]['officers']['shareholder of'][j].name); 
             address[0].address = address[0].address.replace(/\s+/g," ").replace(";",",");
             address = replaceAll(address[0].address,';','');
-            url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+address+'&key=AIzaSyALTBVmaUwpuBzXAarBRZ8piciBjH19sRQ';
-            $.getJSON(url, function(data) {
+            url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+address+'&key=AIzaSyAtopxgmg1GL2hocGB_45mOxe8Fbdky8P8';
+            $.getJSON(url, (function(thisName){return function(data) {
+                // console.log(thisName);
                 var myLatLng = {lat: data.results[0].geometry.location.lat, lng: data.results[0].geometry.location.lng};
-                console.log(data.results[0].geometry.location.lat,data.results[0].geometry.location.lng);
+                console.log([data.results[0].geometry.location.lat,data.results[0].geometry.location.lng, thisName]);
                 var marker = new google.maps.Marker({
                   position: new google.maps.LatLng(myLatLng),
                   map: map,
                   title: "Taiwan"
                 });
                 marker.setMap(map);
-            });
+              }
+            }(data[i]['officers']['shareholder of'][j].name))
+            );
           }
         }
       }
@@ -92,7 +95,7 @@
 
     </script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAVJvVh39L1Hd7-Y7vNPyH11f7fO1-lnug&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAVJvVh39L1Hd7-Y7vNPyH11f7fO1-lnug">
     </script>
   </body>
 </html>
